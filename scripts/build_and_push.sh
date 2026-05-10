@@ -15,7 +15,7 @@ if [[ -z "${NGC_API_KEY:-}" ]]; then
 fi
 
 echo "==> Logging into NGC..."
-echo "$NGC_API_KEY" | docker login nvcr.io -u '$oauthtoken' --password-stdin
+docker login nvcr.io -u '$oauthtoken' -p "$NGC_API_KEY"
 
 echo "==> Building $REPO:$TAG..."
 docker build -f docker/Dockerfile -t "$REPO:$TAG" .
