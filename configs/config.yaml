@@ -1,0 +1,22 @@
+# Root Hydra config
+# Usage: python train.py task=stand_v1 train=ppo_default
+
+defaults:
+  - env: stand_v1
+  - train: ppo_default
+  - domain_randomization: dr_off
+  - _self_
+
+seed: 42
+num_envs: 4096
+headless: true
+device: "cuda:0"
+
+run_name: "${env.name}_${now:%Y-%m-%d_%H-%M-%S}"
+run_dir: "runs/${run_name}"
+
+wandb:
+  enabled: true
+  project: "dodo-rl"
+  entity: null  # set via env var WANDB_ENTITY
+  tags: ["${env.name}", "${train.algo}"]

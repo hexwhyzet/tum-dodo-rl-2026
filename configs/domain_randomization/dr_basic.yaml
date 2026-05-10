@@ -1,0 +1,25 @@
+# @package _global_.domain_randomization
+enabled: true
+
+friction:
+  range: [0.3, 3.0]
+
+mass_scale:
+  range: [0.8, 1.2]
+
+actuator_strength:
+  range: [0.9, 1.1]
+
+push_robots:
+  enabled: true
+  interval_s: 10.0
+  vel_range: [0.5, 1.5]    # m/s random push magnitude
+
+latency:
+  obs_delay_steps: [0, 2]
+  action_delay_steps: [0, 1]
+
+sensor_noise:
+  joint_pos_std: 0.01       # rad
+  joint_vel_std: 0.1        # rad/s
+  ang_vel_std: 0.05         # rad/s

@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Secrets
+.env
+*.key
+wandb/secret*
+
+# Large artifacts (use DVC or HuggingFace Hub instead)
+checkpoints/*.pt
+checkpoints/*.pth
+checkpoints/*.onnx
+videos/*.mp4
+videos/*.gif
+
+# Logs
+logs/
+wandb/
+*.log
+
+# Isaac Sim / Omniverse cache
+.nvidia-omniverse/
+omni.cache/
+kit/
+_build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Runs (keep structure but not data)
+runs/*/model.pt
+runs/*/videos/

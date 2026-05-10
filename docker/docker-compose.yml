@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  train:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        ISAACLAB_COMMIT: main  # pin to a tag/commit before production runs
+    image: dodo-rl:dev
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - WANDB_API_KEY=${WANDB_API_KEY}
+      - WANDB_PROJECT=${WANDB_PROJECT:-dodo-rl}
+      - WANDB_ENTITY=${WANDB_ENTITY}
+      - SEED=${SEED:-42}
+      - NUM_ENVS=${NUM_ENVS:-4096}
+      - HEADLESS=${HEADLESS:-true}
+    volumes:
+      # Live-mount source for fast iteration (remove for production runs)
+      - ..:/workspace
+      # Persist checkpoints and logs outside the container
+      - ../checkpoints:/workspace/checkpoints
+      - ../logs:/workspace/logs
+      - ../runs:/workspace/runs
+      # Isaac Sim asset cache (speeds up restarts)
+      - isaac-cache:/root/.cache/ov
+    ipc: host
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    command:
+      ["/workspace/isaaclab_tasks/scripts/train.py", "task=stand_v1"]
+
+  eval:
+    extends:
+      service: train
+    command:
+      ["/workspace/scripts/eval.py", "checkpoint=${CHECKPOINT}"]
+
+volumes:
+  isaac-cache:
