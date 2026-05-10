@@ -36,6 +36,12 @@ sync:
 	@test -n "$(RUN)" || (echo "Usage: make sync RUN=runs/2026-05-10_stand_v1" && exit 1)
 	./scripts/sync_results.sh $(RUN)
 
+upload-assets:
+	./scripts/upload_assets.sh
+
+download-assets:
+	./scripts/download_assets.sh
+
 # ── Help ──────────────────────────────────────────────────────────────────────
 
 help:
