@@ -1,4 +1,4 @@
-.PHONY: install train eval export sync build push-image help
+.PHONY: install train eval export sync build push-image build-and-push help
 
 # ── Local dev ─────────────────────────────────────────────────────────────────
 
@@ -17,6 +17,9 @@ push-image:
 	@test -n "$(REGISTRY)" || (echo "Set REGISTRY=your.registry/dodo-rl" && exit 1)
 	docker tag dodo-rl:dev $(REGISTRY):$(shell git rev-parse --short HEAD)
 	docker push $(REGISTRY):$(shell git rev-parse --short HEAD)
+
+build-and-push:
+	./scripts/build_and_push.sh
 
 # ── Training ──────────────────────────────────────────────────────────────────
 
@@ -52,4 +55,5 @@ help:
 	@echo "  make eval CHECKPOINT=X  Evaluate checkpoint"
 	@echo "  make export CHECKPOINT=X OBS_DIM=N  Export to TorchScript + ONNX"
 	@echo "  make sync RUN=X       Upload run artifacts to HuggingFace"
+	@echo "  make build-and-push   Build Docker image and push to Docker Hub"
 	@echo ""
