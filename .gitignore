@@ -26,6 +26,10 @@ checkpoints/*.onnx
 videos/*.mp4
 videos/*.gif
 
+# Robot USD assets — stored on HuggingFace Hub, download via: make download-assets
+assets/robot/usd/
+assets/robot/usd/.cache/
+
 # Logs
 logs/
 wandb/
