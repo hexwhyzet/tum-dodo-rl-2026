@@ -8,25 +8,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vim \
     tmux \
     rsync \
+    git \
+    curl \
     && rm -rf /var/lib/apt/lists/*
+
+# ── Claude Code ───────────────────────────────────────────────────────────────
+RUN curl -fsSL https://claude.ai/install.sh | sh
 
 # ── project deps ─────────────────────────────────────────────────────────────
 COPY docker/requirements.txt /tmp/requirements.txt
-RUN /isaac-sim/python.sh -m pip install --no-cache-dir -r /tmp/requirements.txt
-
-# ── Isaac Lab (editable install) ──────────────────────────────────────────────
-RUN /isaac-sim/python.sh -m pip install --no-cache-dir -e /isaac-lab/source/isaaclab
-
-# ── copy project ─────────────────────────────────────────────────────────────
-WORKDIR /workspace
-COPY . /workspace
-
+RUN ${ISAACLAB_PATH}/isaaclab.sh -p -m pip install --no-cache-dir -r /tmp/requirements.txt
 
 # ── env vars ─────────────────────────────────────────────────────────────────
-ENV PYTHONPATH="/workspace:${PYTHONPATH}"
-ENV ISAACLAB_PATH="/workspace/IsaacLab"
 ENV DISPLAY=""
 ENV OMNI_KIT_ALLOW_ROOT="1"
 
-ENTRYPOINT ["/isaac-sim/python.sh"]
-CMD ["--help"]
+# Code is mounted at runtime via -v, not baked into the image
+WORKDIR ${ISAACLAB_PATH}
