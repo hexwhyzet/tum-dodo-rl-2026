@@ -9,13 +9,10 @@ if [[ -f .env ]]; then
   set -a; source .env; set +a
 fi
 
-if [[ -z "${NGC_API_KEY:-}" ]]; then
-  echo "NGC_API_KEY is not set" >&2
-  exit 1
+if [[ -n "${NGC_API_KEY:-}" ]]; then
+  echo "==> Logging into NGC..."
+  docker login nvcr.io -u '$oauthtoken' -p "$NGC_API_KEY" || echo "NGC login failed, continuing with cached image..."
 fi
-
-echo "==> Logging into NGC..."
-docker login nvcr.io -u '$oauthtoken' -p "$NGC_API_KEY"
 
 if [[ "$(uname -m)" == "arm64" || "$(uname -m)" == "aarch64" ]]; then
   echo "==> ARM detected, using buildx for linux/amd64..."
