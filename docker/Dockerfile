@@ -18,6 +18,7 @@ RUN /isaac-sim/python.sh -m pip install --no-cache-dir -r /tmp/requirements.txt
 WORKDIR /workspace
 COPY . /workspace
 
+RUN /isaac-sim/python.sh -m pip install --no-cache-dir setuptools
 RUN /isaac-sim/python.sh -m pip install --no-cache-dir -e /workspace
 
 # ── env vars ─────────────────────────────────────────────────────────────────
