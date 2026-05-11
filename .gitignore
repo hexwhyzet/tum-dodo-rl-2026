@@ -50,6 +50,9 @@ Thumbs.db
 .idea/
 *.swp
 
+# Isaac Lab source (use system install from base image)
+isaaclab/
+
 # Runs (keep structure but not data)
 runs/*/model.pt
 runs/*/videos/

@@ -10,3 +10,4 @@ videos/
 __pycache__/
 *.pyc
 .git/
+isaaclab/

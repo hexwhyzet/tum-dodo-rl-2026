@@ -7,6 +7,11 @@ Usage (inside Docker / Isaac Sim python):
 
 from __future__ import annotations
 
+# AppLauncher must be created before any Isaac Lab / pxr imports
+from isaaclab.app import AppLauncher
+app_launcher = AppLauncher(headless=True)
+simulation_app = app_launcher.app
+
 import os
 import shutil
 from datetime import datetime
@@ -98,3 +103,4 @@ def _save_git_info(run_dir: Path) -> None:
 
 if __name__ == "__main__":
     main()
+    simulation_app.close()
