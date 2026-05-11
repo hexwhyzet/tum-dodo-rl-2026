@@ -1,0 +1,61 @@
+# @package _global_.env
+name: walk_v1
+description: "Forward walking — velocity tracking on flat terrain"
+
+robot_usd: "assets/robot/usd/dodo_ROS.usd"
+
+joints:
+  hip:      ["hip_right", "hip_left"]
+  thigh:    ["upper_leg_right", "upper_leg_left"]
+  knee:     ["lower_leg_right", "lower_leg_left"]
+  ankle:    ["foot_right", "foot_left"]
+  feet_contact: ["foot_sole_right", "foot_sole_left"]
+
+control_freq_hz: 50
+physics_freq_hz: 200
+action_scale: 0.5
+use_pd_control: true
+
+obs:
+  joint_pos: true
+  joint_vel: true
+  base_ang_vel: true
+  projected_gravity: true
+  commands: true          # target velocity
+  last_action: true
+
+obs_noise:
+  enabled: false
+
+commands:
+  lin_vel_x: [0.0, 1.5]   # m/s range
+  lin_vel_y: [-0.3, 0.3]
+  ang_vel_yaw: [-0.5, 0.5]
+  resampling_interval_s: 10.0
+
+termination:
+  max_episode_len_s: 20.0
+  fall_height_threshold: 0.3
+  contact_penalty_bodies: []
+
+rewards:
+  lin_vel_tracking:
+    weight: 2.0
+    sigma: 0.25
+  ang_vel_tracking:
+    weight: 0.5
+    sigma: 0.25
+  upright:
+    weight: 1.0
+  alive:
+    weight: 0.5
+  energy:
+    weight: -0.001
+  action_rate:
+    weight: -0.01
+  foot_clearance:
+    weight: 0.2
+  dof_pos_limits:
+    weight: -1.0
+  collision:
+    weight: -1.0

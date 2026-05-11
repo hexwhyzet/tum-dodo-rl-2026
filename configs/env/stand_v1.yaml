@@ -1,0 +1,50 @@
+# @package _global_.env
+name: stand_v1
+description: "Standing task — upright, no falling, minimal energy"
+
+robot_usd: "assets/robot/usd/dodo_ROS.usd"
+
+# Joint names (8 DOF biped — foot_sole_* are fixed joints, excluded)
+joints:
+  hip:      ["hip_right", "hip_left"]
+  thigh:    ["upper_leg_right", "upper_leg_left"]
+  knee:     ["lower_leg_right", "lower_leg_left"]
+  ankle:    ["foot_right", "foot_left"]
+  feet_contact: ["foot_sole_right", "foot_sole_left"]  # fixed, used for contact sensing
+
+# Control
+control_freq_hz: 50        # policy runs at 50 Hz
+physics_freq_hz: 200       # physics substeps between policy steps
+action_scale: 0.5          # scale applied to policy output (target joint pos delta)
+use_pd_control: true
+
+# Observations
+obs:
+  joint_pos: true
+  joint_vel: true
+  base_ang_vel: true
+  projected_gravity: true
+  last_action: true
+  # no cameras, no exteroception yet
+
+obs_noise:
+  enabled: false  # enable after policy is stable
+
+# Termination
+termination:
+  max_episode_len_s: 20.0
+  fall_height_threshold: 0.3   # base height below this → episode ends
+  contact_penalty_bodies: []   # body names that trigger penalty on contact
+
+# Rewards (weights)
+rewards:
+  upright:
+    weight: 2.0
+  alive:
+    weight: 0.5
+  energy:
+    weight: -0.001
+  action_rate:
+    weight: -0.01
+  dof_pos_limits:
+    weight: -1.0

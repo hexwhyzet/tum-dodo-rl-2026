@@ -14,6 +14,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY docker/requirements.txt /tmp/requirements.txt
 RUN /isaac-sim/python.sh -m pip install --no-cache-dir -r /tmp/requirements.txt
 
+# ── Isaac Lab (editable install) ──────────────────────────────────────────────
+RUN /isaac-sim/python.sh -m pip install --no-cache-dir -e /isaac-lab/source/isaaclab
+
 # ── copy project ─────────────────────────────────────────────────────────────
 WORKDIR /workspace
 COPY . /workspace

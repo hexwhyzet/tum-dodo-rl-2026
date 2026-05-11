@@ -12,7 +12,7 @@ build/
 # Virtual envs
 .venv/
 venv/
-env/
+/env/
 
 # Secrets
 .env

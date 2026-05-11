@@ -1,0 +1,12 @@
+.env
+.env.*
+*.env
+
+checkpoints/
+logs/
+runs/
+videos/
+.venv/
+__pycache__/
+*.pyc
+.git/
