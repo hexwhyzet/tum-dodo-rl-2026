@@ -25,10 +25,8 @@ WORKDIR /opt/isaaclab
 
 # isaaclab.sh expects Isaac Sim at _isaac_sim inside its own directory
 RUN ln -s /isaac-sim /opt/isaaclab/_isaac_sim
-RUN TERM=xterm ./isaaclab.sh -p -m pip install toml
 RUN TERM=xterm ./isaaclab.sh -p /opt/isaaclab/tools/install_deps.py apt /opt/isaaclab/source
-RUN TERM=xterm ./isaaclab.sh --install || \
-    ( /isaac-sim/kit/python/bin/python3 -m ensurepip --upgrade && TERM=xterm ./isaaclab.sh --install )
+RUN TERM=xterm ./isaaclab.sh --install
 
 # ── project deps ─────────────────────────────────────────────────────────────
 COPY docker/requirements.txt /tmp/requirements.txt
