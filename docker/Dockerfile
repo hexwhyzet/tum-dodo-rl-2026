@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # ── Claude Code ───────────────────────────────────────────────────────────────
-RUN curl -fsSL https://claude.ai/install.sh | sh
+RUN curl -fsSL https://claude.ai/install.sh | bash
 
 # ── project deps ─────────────────────────────────────────────────────────────
 COPY docker/requirements.txt /tmp/requirements.txt
