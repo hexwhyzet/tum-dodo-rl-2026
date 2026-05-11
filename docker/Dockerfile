@@ -3,6 +3,7 @@
 FROM nvcr.io/nvidia/isaac-sim:6.0.0-dev2
 
 # ── system deps ──────────────────────────────────────────────────────────────
+USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
@@ -22,8 +23,10 @@ RUN git clone https://github.com/isaac-sim/IsaacLab.git /opt/isaaclab \
 
 WORKDIR /opt/isaaclab
 
-# isaaclab.sh installs Isaac Lab into the Isaac Sim Python env
-RUN ./isaaclab.sh --install
+# isaaclab.sh expects Isaac Sim at _isaac_sim inside its own directory
+RUN ln -s /isaac-sim /opt/isaaclab/_isaac_sim
+RUN TERM=xterm ./isaaclab.sh -p -m pip install toml
+RUN TERM=xterm ./isaaclab.sh --install
 
 # ── project deps ─────────────────────────────────────────────────────────────
 COPY docker/requirements.txt /tmp/requirements.txt

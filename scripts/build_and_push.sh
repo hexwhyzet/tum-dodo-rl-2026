@@ -17,10 +17,16 @@ fi
 echo "==> Logging into NGC..."
 docker login nvcr.io -u '$oauthtoken' -p "$NGC_API_KEY"
 
-echo "==> Building $REPO:$TAG..."
-docker build -f docker/Dockerfile -t "$REPO:$TAG" .
-
-echo "==> Pushing $REPO:$TAG..."
-docker push "$REPO:$TAG"
+if [[ "$(uname -m)" == "arm64" || "$(uname -m)" == "aarch64" ]]; then
+  echo "==> ARM detected, using buildx for linux/amd64..."
+  docker buildx build --platform linux/amd64 -f docker/Dockerfile -t "$REPO:$TAG" \
+    --cache-from type=registry,ref="$REPO:cache-amd64" \
+    --cache-to type=registry,ref="$REPO:cache-amd64",mode=max \
+    --push .
+else
+  echo "==> x86_64 detected, using plain docker build..."
+  docker build -f docker/Dockerfile -t "$REPO:$TAG" .
+  docker push "$REPO:$TAG"
+fi
 
 echo "==> Done: $REPO:$TAG"
